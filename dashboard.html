@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Phish Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="src/styles/components.css">
+    <link rel="stylesheet" href="src/styles/dashboard.css">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="icon">🛡️</span> Zero <span class="neon-text-blue">Phish</span>
+            </div>
+            <nav class="side-nav">
+                <a href="#" class="active">Overview</a>
+                <a href="#">Threat Log</a>
+                <a href="#">Settings</a>
+                <a href="index.html" class="nav-bottom">Back to Home</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h2>Security Overview</h2>
+                <div class="user-profile">
+                    <span class="status-indicator online"></span>
+                    System Active
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Sites Scanned</h3>
+                    <div class="number text-blue">14,205</div>
+                    <div class="trend up">+12% today</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Threats Blocked</h3>
+                    <div class="number text-red">127</div>
+                    <div class="trend up">+3 detected</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Risk Score</h3>
+                    <div class="number text-orange">Low</div>
+                    <div class="trend down">Safe</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-panel">
+                <h3>Recent Live Scans</h3>
+                <div class="scan-list">
+                    <div class="scan-item safe">
+                        <span class="time">12:04:23</span>
+                        <span class="url">example.com/login</span>
+                        <span class="status">SAFE</span>
+                    </div>
+                    <div class="scan-item warning">
+                        <span class="time">12:04:21</span>
+                        <span class="url">suspicious-bank-login.net</span>
+                        <span class="status">BLOCKED</span>
+                    </div>
+                    <div class="scan-item safe">
+                        <span class="time">12:04:15</span>
+                        <span class="url">google.com</span>
+                        <span class="status">SAFE</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

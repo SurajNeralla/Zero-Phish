@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Phish - Advanced Real-Time Protection</title>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="src/styles/components.css">
+    <link rel="stylesheet" href="src/styles/home.css">
+    <link rel="stylesheet" href="src/styles/simulation.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <span class="icon">🛡️</span> Zero <span class="neon-text-blue">Phish</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it Works</a>
+                <a href="dashboard.html" class="btn btn-outline">Dashboard</a>
+                <a href="#" class="btn btn-primary" id="start-simulation">Test Protection</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container hero-content">
+            <h1 class="hero-title">
+                Real-Time <span class="neon-text-red">Threat</span> Neutralization
+            </h1>
+            <p class="hero-subtitle">
+                Advanced AI-driven protection against phishing, malware, and zero-day exploits. Secured by quantum-ready
+                encryption.
+            </p>
+            <div class="hero-actions">
+                <button class="btn btn-primary btn-lg glow-effect" onclick="startSimulation()">
+                    Launch Simulation
+                </button>
+                <button class="btn btn-secondary btn-lg">
+                    View Analytics
+                </button>
+            </div>
+        </div>
+
+        <!-- Holographic Background Element -->
+        <div class="holo-grid"></div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">Advanced <span class="neon-text-blue">Security</span> Layers</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon-box">⚡</div>
+                    <h3>Instant Scanning</h3>
+                    <p>URLs are analyzed in under 20ms using our distributed global network.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box">🧠</div>
+                    <h3>AI Threat Core</h3>
+                    <p>Deep learning models detect zero-day phishing patterns before they strike.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box">🛡️</div>
+                    <h3>Active Blocking</h3>
+                    <p>Malicious sites are blocked instantly with a 10s warning protocol.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulation Container (Hidden by default) -->
+    <div id="simulation-overlay" class="hidden">
+        <!-- Content injected by JS -->
+    </div>
+
+    <script src="src/js/app.js"></script>
+    <script src="src/js/simulation.js"></script>
+</body>
+
+</html>

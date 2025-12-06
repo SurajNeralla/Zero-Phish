@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Phish</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="popup-container">
+        <header class="header">
+            <span class="logo-icon">🛡️</span>
+            <h1 class="logo-text">Zero <span class="neon-blue">Phish</span></h1>
+        </header>
+
+        <div class="status-panel secure" id="status-panel">
+            <div class="status-icon">✓</div>
+            <div class="status-text">
+                <h2>System Active</h2>
+                <p>You are protected</p>
+            </div>
+            <div class="pulse-ring"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="trigger-simulation">
+                ⚠️ Simulate Attack
+            </button>
+            <button class="btn btn-secondary" id="open-dashboard">
+                Admin Dashboard
+            </button>
+        </div>
+
+        <!-- Hidden debug info -->
+        <div id="debug-log" style="display:none; color: #666; font-size: 10px; margin-top: 10px;"></div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>

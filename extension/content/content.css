@@ -1,0 +1,404 @@
+/* Simulation Overlay Layers */
+
+#zerophish-overlay-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2147483647;
+    /* Max Z-index */
+    pointer-events: auto;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Background Effects */
+.overlay-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* Warning State */
+.warning-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    /* Semi-transparent layout */
+    backdrop-filter: blur(8px);
+    /* Glassmorphism */
+    -webkit-backdrop-filter: blur(8px);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.warning-box {
+    background: rgba(20, 20, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 40px 60px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    position: relative;
+    color: #FFF;
+}
+
+/* Icons & Typography */
+.warning-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #FFC107;
+    /* Amber warning */
+}
+
+.warning-title {
+    font-size: 1.5rem;
+    color: #FFF;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+}
+
+.warning-text {
+    color: #CCC;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.countdown-box {
+    margin: 20px 0;
+    font-size: 0.9rem;
+    color: #AAA;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.countdown-timer {
+    display: inline-block;
+    font-size: 1.1rem;
+    color: #FFF;
+    font-weight: bold;
+    margin-left: 8px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Buttons */
+.warning-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-leave {
+    background: #FFF;
+    color: #000;
+    border: none;
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-leave:hover {
+    background: #F0F0F0;
+    transform: translateY(-1px);
+}
+
+.btn-trust {
+    background: transparent;
+    color: #AAA;
+    border: 1px solid #444;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-trust:hover {
+    color: #FFF;
+    border-color: #666;
+}
+
+/* Blocked State */
+.blocked-overlay {
+    background: rgba(10, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #FFF;
+}
+
+.blocked-icon {
+    font-size: 4rem;
+    color: #FF3B30;
+    /* Red error */
+    margin-bottom: 20px;
+}
+
+.blocked-title {
+    font-size: 2rem;
+    color: #FFF;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+}
+
+.blocked-desc {
+    color: #DDD;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+.btn-safety {
+    background: #FF3B30;
+    color: #FFF;
+    padding: 14px 32px;
+    font-size: 1rem;
+    border: none;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-safety:hover {
+    background: #FF5A50;
+}
+
+/* Animation Utilities */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Floating Shield Icon */
+#zerophish-shield-root {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 2147483646 !important;
+    /* Just below overlay */
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    display: block !important;
+}
+
+.shield-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(30, 30, 30, 0.9);
+    backdrop-filter: blur(8px);
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #555;
+    font-size: 24px;
+}
+
+.shield-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Status Colors */
+.shield-status-safe {
+    border-color: #00E676;
+    /* Green */
+    color: #00E676;
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+}
+
+.shield-status-suspicious {
+    border-color: #FFC107;
+    /* Yellow */
+    color: #FFC107;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+}
+
+.shield-status-phishing {
+    border-color: #FF3D00;
+    /* Red */
+    color: #FF3D00;
+    box-shadow: 0 0 15px rgba(255, 61, 0, 0.4);
+    animation: pulse-red 2s infinite;
+}
+
+.shield-status-unknown {
+    border-color: #9E9E9E;
+    /* Grey */
+    color: #9E9E9E;
+}
+
+/* Security Report Popup */
+.security-report {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 300px;
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    transform-origin: top right;
+    animation: slideDown 0.2s ease-out;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    display: none;
+    /* Hidden by default */
+}
+
+.security-report.visible {
+    display: block;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.report-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.report-status {
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.status-text-safe {
+    color: #00E676;
+}
+
+.status-text-suspicious {
+    color: #FFC107;
+}
+
+.status-text-phishing {
+    color: #FF3D00;
+}
+
+.status-text-unknown {
+    color: #9E9E9E;
+}
+
+.report-details {
+    font-size: 0.9rem;
+    color: #BBB;
+    line-height: 1.5;
+}
+
+.report-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.report-label {
+    color: #888;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 61, 0, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 61, 0, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 61, 0, 0);
+    }
+}
+
+/* Report Phishing Button */
+.btn-report {
+    width: 100%;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #FF3D00, #D50000);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(213, 0, 0, 0.2);
+}
+
+.btn-report:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(213, 0, 0, 0.3);
+    filter: brightness(1.1);
+}
+
+.btn-report:active {
+    transform: translateY(0);
+}
+
+.btn-report.loading {
+    background: #555;
+    cursor: wait;
+    box-shadow: none;
+}
+
+.btn-report.success {
+    background: #00E676;
+    color: #004D40;
+    cursor: default;
+    box-shadow: none;
+}

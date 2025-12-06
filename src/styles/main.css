@@ -1,0 +1,66 @@
+:root {
+    /* Color Palette */
+    --neon-blue: #00F0FF;
+    --neon-red: #FF2A6D;
+    --neon-orange: #FF9E00;
+    --bg-dark: #050510;
+    --bg-panel: #0A0A1F;
+    --text-main: #FFFFFF;
+    --text-muted: #8892B0;
+    
+    /* Gradients */
+    --gradient-glow: linear-gradient(135deg, rgba(0, 240, 255, 0.1) 0%, rgba(5, 5, 16, 0) 100%);
+    
+    /* Effects */
+    --glow-blue: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.3);
+    --glow-red: 0 0 10px rgba(255, 42, 109, 0.5), 0 0 20px rgba(255, 42, 109, 0.3);
+    --border-glow: 1px solid rgba(0, 240, 255, 0.3);
+    
+    /* Typography */
+    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Fira Code', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Utilities */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.neon-text-blue {
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.neon-text-red {
+    color: var(--neon-red);
+    text-shadow: 0 0 5px var(--neon-red);
+}
+
+.hidden {
+    display: none !important;
+}

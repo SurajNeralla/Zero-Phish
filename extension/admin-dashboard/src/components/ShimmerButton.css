@@ -1,0 +1,101 @@
+@keyframes shimmer-slide {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes spin-around {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.shimmer-button {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.75rem 1.5rem;
+    color: white;
+    background: var(--bg);
+    border-radius: var(--radius);
+    transform: translateZ(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.shimmer-button:active {
+    transform: translateY(1px);
+}
+
+.shimmer-spark-container {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+    container-type: size;
+    z-index: -30;
+    filter: blur(2px);
+}
+
+.shimmer-spark {
+    position: absolute;
+    inset: 0;
+    height: 100cqh;
+    aspect-ratio: 1;
+    border-radius: 0;
+    mask: none;
+    animation: shimmer-slide var(--speed) linear infinite;
+}
+
+.shimmer-spark-before {
+    position: absolute;
+    inset: -100%;
+    width: auto;
+    transform: rotate(0deg);
+    background: conic-gradient(from calc(270deg - (var(--spread) * 0.5)),
+            transparent 0,
+            var(--shimmer-color) var(--spread),
+            transparent var(--spread));
+    translate: 0 0;
+    animation: spin-around calc(var(--speed) * 2) linear infinite;
+}
+
+.shimmer-highlight {
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 0.25rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: inset 0 -8px 10px rgba(255, 255, 255, 0.12);
+    transform: translateZ(0);
+    transition: all 0.3s ease-in-out;
+}
+
+.shimmer-button:hover .shimmer-highlight {
+    box-shadow: inset 0 -6px 10px rgba(255, 255, 255, 0.25);
+}
+
+.shimmer-button:active .shimmer-highlight {
+    box-shadow: inset 0 -10px 10px rgba(255, 255, 255, 0.25);
+}
+
+.shimmer-backdrop {
+    position: absolute;
+    z-index: -20;
+    background: var(--bg);
+    border-radius: var(--radius);
+    inset: var(--cut);
+}

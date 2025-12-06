@@ -1,0 +1,119 @@
+/* Dashboard Layout */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background: var(--bg-panel);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-nav {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex-grow: 1;
+}
+
+.side-nav a {
+    color: var(--text-muted);
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.side-nav a:hover,
+.side-nav a.active {
+    background: rgba(0, 240, 255, 0.05);
+    color: var(--neon-blue);
+    border: 1px solid rgba(0, 240, 255, 0.1);
+}
+
+.nav-bottom {
+    margin-top: auto;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    background: var(--bg-dark);
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: var(--bg-panel);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-card h3 {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.stat-card .number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.text-blue {
+    color: var(--neon-blue);
+}
+
+.text-red {
+    color: var(--neon-red);
+}
+
+.text-orange {
+    color: var(--neon-orange);
+}
+
+.scan-list {
+    background: var(--bg-panel);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.scan-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+
+.scan-item:last-child {
+    border-bottom: none;
+}
+
+.scan-item.safe .status {
+    color: var(--neon-blue);
+}
+
+.scan-item.warning .status {
+    color: var(--neon-red);
+}
