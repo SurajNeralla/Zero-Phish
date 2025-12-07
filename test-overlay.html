@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Phish Test - Phishing Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .test-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #d32f2f;
+        }
+
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-card">
+        <h1>🛡️ Zero Phish Overlay Test Page</h1>
+
+        <div class="status">
+            <strong>⚠️ This is a TEST page</strong><br>
+            This page contains the keyword "phish=true" in its URL to trigger the Zero Phish overlay.
+        </div>
+
+        <h2>Expected Behavior:</h2>
+        <ol>
+            <li>A <strong>red overlay</strong> should appear over this page within 1 second</li>
+            <li>You should see a <strong>5-second countdown timer</strong></li>
+            <li>Two buttons should appear:
+                <ul>
+                    <li>"Leave Site Now" - closes the tab</li>
+                    <li>"I Trust This Site" - dismisses the warning</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2>If Nothing Appears:</h2>
+        <ol>
+            <li>Open browser console (Press <code>F12</code>)</li>
+            <li>Look for messages starting with "Zero Phish:"</li>
+            <li>If you see NO messages at all, the extension isn't loaded</li>
+            <li>Go to <code>chrome://extensions/</code> and reload "Zero Phish"</li>
+            <li>Refresh this page (<code>F5</code>)</li>
+        </ol>
+
+        <h2>Console Debug Info:</h2>
+        <p>Open the console and you should see:</p>
+        <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 4px; overflow-x: auto;">
+Zero Phish Content Script Loaded
+Zero Phish: Initializing...
+Zero Phish: PhishingOverlay Initialized
+Zero Phish: FloatingShield Initialized
+Zero Phish: Scanning URL file:///...test-overlay.html?phish=true
+Zero Phish: THREAT DETECTED by API: ...
+        </pre>
+    </div>
+
+    <script>
+        // Add phish=true to URL if not present
+        if (!window.location.search.includes('phish=true')) {
+            window.location.search = '?phish=true';
+        }
+    </script>
+</body>
+
+</html>

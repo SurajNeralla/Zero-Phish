@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Open Dashboard (New Tab)
     document.getElementById('open-dashboard').addEventListener('click', () => {
-        // Correct path relative to manifest.json (extension root)
-        chrome.tabs.create({ url: chrome.runtime.getURL('dashboard/index.html') });
+        const dashboardUrl = chrome.runtime.getURL('extension/dashboard/index.html');
+        chrome.tabs.create({ url: dashboardUrl });
     });
 });

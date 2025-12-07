@@ -123,10 +123,7 @@ class PhishingOverlay {
 
     forceProceed() {
         if (this.timer) clearInterval(this.timer);
-        // In a real extension, we would whitelist the site.
-        // Here we just close the overlay
         this.close();
-        alert("Site temporarily trusted for this session.");
     }
 }
 
@@ -134,6 +131,8 @@ class FloatingShield {
     constructor() {
         this.root = null;
         this.status = 'unknown'; // safe, suspicious, phishing, unknown
+        this.isDragging = false;
+        this.dragOffset = { x: 0, y: 0 };
         this.createShield();
     }
 
@@ -172,16 +171,111 @@ class FloatingShield {
 
         document.body.appendChild(this.root);
 
-        // Click Handler for Shield
-        this.root.querySelector('#zp-shield-icon').addEventListener('click', () => {
-            const report = this.root.querySelector('#zp-report-card');
-            report.classList.toggle('visible');
+        // Restore saved position
+        this.restorePosition();
+
+        const shieldIcon = this.root.querySelector('#zp-shield-icon');
+
+        // Click Handler for Shield (only if not dragging)
+        shieldIcon.addEventListener('click', (e) => {
+            if (!this.wasDragged) {
+                const report = this.root.querySelector('#zp-report-card');
+                report.classList.toggle('visible');
+            }
+            this.wasDragged = false;
         });
+
+        // Drag functionality
+        shieldIcon.addEventListener('mousedown', (e) => this.startDrag(e));
+        document.addEventListener('mousemove', (e) => this.onDrag(e));
+        document.addEventListener('mouseup', () => this.endDrag());
+
+        // Touch support for mobile
+        shieldIcon.addEventListener('touchstart', (e) => this.startDrag(e.touches[0]), { passive: false });
+        document.addEventListener('touchmove', (e) => {
+            if (this.isDragging) {
+                e.preventDefault();
+                this.onDrag(e.touches[0]);
+            }
+        }, { passive: false });
+        document.addEventListener('touchend', () => this.endDrag());
 
         // Click Handler for Report Button
         this.root.querySelector('#zp-btn-report').addEventListener('click', (e) => this.handleReport(e));
 
         this.checkStatus();
+    }
+
+    startDrag(e) {
+        const shieldIcon = this.root.querySelector('#zp-shield-icon');
+        const rect = this.root.getBoundingClientRect();
+        this.isDragging = true;
+        this.wasDragged = false;
+        this.dragOffset = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+        shieldIcon.style.cursor = 'grabbing';
+        shieldIcon.style.transition = 'none';
+    }
+
+    onDrag(e) {
+        if (!this.isDragging) return;
+
+        this.wasDragged = true;
+
+        let newX = e.clientX - this.dragOffset.x;
+        let newY = e.clientY - this.dragOffset.y;
+
+        // Keep within viewport bounds
+        const maxX = window.innerWidth - 60;
+        const maxY = window.innerHeight - 60;
+        newX = Math.max(0, Math.min(newX, maxX));
+        newY = Math.max(0, Math.min(newY, maxY));
+
+        this.root.style.left = newX + 'px';
+        this.root.style.top = newY + 'px';
+        this.root.style.right = 'auto';
+        this.root.style.bottom = 'auto';
+    }
+
+    endDrag() {
+        if (!this.isDragging) return;
+
+        this.isDragging = false;
+        const shieldIcon = this.root.querySelector('#zp-shield-icon');
+        shieldIcon.style.cursor = 'grab';
+        shieldIcon.style.transition = 'transform 0.2s, box-shadow 0.2s';
+
+        // Save position to localStorage
+        this.savePosition();
+    }
+
+    savePosition() {
+        const rect = this.root.getBoundingClientRect();
+        localStorage.setItem('zerophish-shield-pos', JSON.stringify({
+            left: rect.left,
+            top: rect.top
+        }));
+    }
+
+    restorePosition() {
+        try {
+            const saved = localStorage.getItem('zerophish-shield-pos');
+            if (saved) {
+                const pos = JSON.parse(saved);
+                // Validate position is within current viewport
+                if (pos.left >= 0 && pos.left < window.innerWidth - 60 &&
+                    pos.top >= 0 && pos.top < window.innerHeight - 60) {
+                    this.root.style.left = pos.left + 'px';
+                    this.root.style.top = pos.top + 'px';
+                    this.root.style.right = 'auto';
+                    this.root.style.bottom = 'auto';
+                }
+            }
+        } catch (e) {
+            console.warn('Zero Phish: Could not restore shield position');
+        }
     }
 
     async handleReport(event) {
@@ -200,7 +294,7 @@ class FloatingShield {
                 data: pageData
             }, (response) => {
                 if (response && response.success) {
-                    btn.innerText = ' Report Sent!';
+                    btn.innerText = '✓ Report Sent!';
                     btn.classList.remove('loading');
                     btn.classList.add('success');
 
@@ -216,7 +310,12 @@ class FloatingShield {
             });
         } catch (err) {
             console.error(err);
-            btn.innerText = 'Error.';
+            if (err.message.includes('Extension context invalidated')) {
+                btn.innerText = '⟳ Refresh Page';
+                alert('Extension was updated. Please refresh this page to reconnect.');
+            } else {
+                btn.innerText = 'Error.';
+            }
             btn.classList.remove('loading');
         }
     }
@@ -230,31 +329,55 @@ class FloatingShield {
         };
     }
 
-    checkStatus() {
+    async checkStatus() {
         const domain = window.location.hostname;
         const protocol = window.location.protocol;
-
-        let status = 'safe';
-        let threatLevel = 'Low';
-
-        // 1. Check Protocol
         const isSecure = protocol === 'https:';
+        const currentURL = window.location.href;
 
-        // 2. Check Suspicious Patterns (Hardcoded for demo)
-        const suspiciousPatterns = ['test-phishing', 'suspicious', '?phish=true'];
-        const isSuspicious = suspiciousPatterns.some(p => window.location.href.includes(p));
+        let status = 'unknown';
+        let threatLevel = isSecure ? 'Low' : 'Medium (No HTTPS)';
 
-        if (!isSecure && !isSuspicious) {
-            status = 'unknown';
-            threatLevel = 'Medium (No HTTPS)';
-        }
-
-        if (isSuspicious) {
-            status = 'phishing';
-            threatLevel = 'Critical';
-        }
-
+        // First, update with basic info
         this.updateUI(status, domain, isSecure ? 'Secure (HTTPS)' : 'Insecure (HTTP)', threatLevel);
+
+        // Check for test/demo phishing indicators
+        if (currentURL.includes('phish=true') || currentURL.includes('phishing-test')) {
+            this.updateUI('phishing', domain, isSecure ? 'Secure (HTTPS)' : 'Insecure (HTTP)', 'High - Phishing Detected');
+            return;
+        }
+
+        // Check via backend API
+        try {
+            chrome.runtime.sendMessage({
+                action: "check_url",
+                url: currentURL
+            }, (response) => {
+                if (chrome.runtime.lastError) {
+                    console.warn("Zero Phish Shield: Could not connect to background script");
+                    // Default to safe if we can't check
+                    this.updateUI('safe', domain, isSecure ? 'Secure (HTTPS)' : 'Insecure (HTTP)', isSecure ? 'Low' : 'Medium (No HTTPS)');
+                    return;
+                }
+
+                if (response && response.success && response.data) {
+                    if (response.data.isPhishing || response.data.threat === 'high') {
+                        this.updateUI('phishing', domain, isSecure ? 'Secure (HTTPS)' : 'Insecure (HTTP)', 'High - Phishing Detected');
+                    } else if (response.data.threat === 'medium' || response.data.suspicious) {
+                        this.updateUI('suspicious', domain, isSecure ? 'Secure (HTTPS)' : 'Insecure (HTTP)', 'Medium - Suspicious Activity');
+                    } else {
+                        this.updateUI('safe', domain, isSecure ? 'Secure (HTTPS)' : 'Insecure (HTTP)', isSecure ? 'Low' : 'Medium (No HTTPS)');
+                    }
+                } else {
+                    // If backend doesn't respond or no data, assume safe
+                    this.updateUI('safe', domain, isSecure ? 'Secure (HTTPS)' : 'Insecure (HTTP)', isSecure ? 'Low' : 'Medium (No HTTPS)');
+                }
+            });
+        } catch (err) {
+            console.warn("Zero Phish Shield: URL check failed", err);
+            // Default to safe on error
+            this.updateUI('safe', domain, isSecure ? 'Secure (HTTPS)' : 'Insecure (HTTP)', isSecure ? 'Low' : 'Medium (No HTTPS)');
+        }
     }
 
     updateUI(status, domain, encryption, threat) {
@@ -278,43 +401,61 @@ let phishGuard;
 let zeroShield;
 
 function init() {
-    console.log("Zero Phish: Initializing..."); // DEBUG
+    console.log("Zero Phish: Initializing...");
     if (!phishGuard) {
         phishGuard = new PhishingOverlay();
-        console.log("Zero Phish: PhishingOverlay Initialized"); // DEBUG
+        console.log("Zero Phish: PhishingOverlay Initialized");
     }
     if (!zeroShield) {
         zeroShield = new FloatingShield();
-        console.log("Zero Phish: FloatingShield Initialized"); // DEBUG
+        console.log("Zero Phish: FloatingShield Initialized");
     }
-    runAutoScan();
+
+    // Automatically scan the current URL
+    scanCurrentURL();
 }
 
-// Automatic Scanning Logic
-function runAutoScan() {
-    const currentUrl = window.location.href;
-    console.log("Zero Phish: Scanning URL", currentUrl); // DEBUG
+// Automatic URL Scanning
+async function scanCurrentURL() {
+    const currentURL = window.location.href;
+    console.log("Zero Phish: Scanning URL", currentURL);
 
-    const suspiciousPatterns = [
-        'example.com',           // Safe for testing
-        'test-phishing',         // Demo keyword
-        'suspicious',            // Demo keyword
-        '?phish=true',           // Manual trigger via URL
-        'adventure-nicaragua.net' // User added Phishing Site
-    ];
+    // Check for test/demo phishing indicators
+    if (currentURL.includes('phish=true') || currentURL.includes('phishing-test')) {
+        console.log("Zero Phish: THREAT DETECTED - Test phishing URL");
+        phishGuard.start();
+        return;
+    }
 
-    const isSuspicious = suspiciousPatterns.some(pattern => currentUrl.includes(pattern));
+    // Check via backend API
+    try {
+        chrome.runtime.sendMessage({
+            action: "check_url",
+            url: currentURL
+        }, (response) => {
+            if (chrome.runtime.lastError) {
+                console.warn("Zero Phish: Could not connect to background script", chrome.runtime.lastError.message);
+                return;
+            }
 
-    if (isSuspicious) {
-        console.log("Zero Phish: Auto-detected suspicious URL:", currentUrl);
-        // Add a small delay so the user sees the page first
-        setTimeout(() => {
-            if (phishGuard) phishGuard.start();
-        }, 1000); // 1 second delay
+            if (response && response.success && response.data) {
+                console.log("Zero Phish: API Response", response.data);
+
+                if (response.data.isPhishing || response.data.threat === 'high') {
+                    console.log("Zero Phish: THREAT DETECTED by API");
+                    phishGuard.start();
+                } else if (response.data.threat === 'medium' || response.data.suspicious) {
+                    console.log("Zero Phish: Suspicious activity detected");
+                    // Could show a banner instead of full overlay for medium threats
+                }
+            }
+        });
+    } catch (err) {
+        console.warn("Zero Phish: URL check failed", err);
     }
 }
 
-// Run scan on load
+// Run on load
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {

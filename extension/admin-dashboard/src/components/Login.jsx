@@ -42,7 +42,7 @@ const Login = ({ onLogin }) => {
         setError('');
 
         setTimeout(() => {
-            if (pin === '1234') {
+            if (pin === '2007') {
                 onLogin({ user: { email: 'admin@zerophish.local' }, access_token: 'pin-auth' });
             } else {
                 setError('Invalid PIN');
@@ -83,8 +83,8 @@ const Login = ({ onLogin }) => {
                         {error && (
                             <motion.div
                                 className={`mb-4 p-3 rounded-xl text-sm ${error.includes('email')
-                                        ? 'bg-blue-500/10 border border-blue-500/30 text-blue-400'
-                                        : 'bg-red-500/10 border border-red-500/30 text-red-400'
+                                    ? 'bg-blue-500/10 border border-blue-500/30 text-blue-400'
+                                    : 'bg-red-500/10 border border-red-500/30 text-red-400'
                                     }`}
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
@@ -102,8 +102,8 @@ const Login = ({ onLogin }) => {
                             <button
                                 type="button"
                                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${activeTab === 'email'
-                                        ? 'bg-blue-500/20 text-blue-400'
-                                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                                    ? 'bg-blue-500/20 text-blue-400'
+                                    : 'text-neutral-400 hover:text-white hover:bg-white/5'
                                     }`}
                                 onClick={() => setActiveTab('email')}
                             >
@@ -114,8 +114,8 @@ const Login = ({ onLogin }) => {
                         <button
                             type="button"
                             className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${activeTab === 'pin'
-                                    ? 'bg-blue-500/20 text-blue-400'
-                                    : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                                ? 'bg-blue-500/20 text-blue-400'
+                                : 'text-neutral-400 hover:text-white hover:bg-white/5'
                                 }`}
                             onClick={() => setActiveTab('pin')}
                         >

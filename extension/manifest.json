@@ -5,6 +5,7 @@
     "description": "Advanced real-time phishing detection and protection extension.",
     "permissions": [
         "activeTab",
+        "tabs",
         "scripting",
         "storage",
         "webNavigation"
@@ -35,7 +36,9 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "content/content.css"
+                "content/content.css",
+                "dashboard/index.html",
+                "dashboard/assets/*"
             ],
             "matches": [
                 "<all_urls>"
